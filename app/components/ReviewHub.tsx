@@ -24,6 +24,7 @@ import {
     LayoutGrid,
     Rows,
 } from "lucide-react";
+import Image from 'next/image'
 import { AnimatePresence, motion } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 
@@ -525,7 +526,7 @@ export default function ReviewHub() {
         }
         if (typeof window !== "undefined") {
             const mmHover = window.matchMedia(
-                "(hover: hover) and (pointer: fine)"
+                "(hover: hover) and (pointer: fine)",
             );
             const onChange = () => setCanHover(mmHover.matches);
             onChange();
@@ -583,7 +584,7 @@ export default function ReviewHub() {
     /* callbacks */
     const toggleTag = useCallback((t: string) => {
         setActiveTags((prev) =>
-            prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
+            prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t],
         );
     }, []);
     const clearTags = useCallback(() => setActiveTags([]), []);
@@ -608,7 +609,7 @@ export default function ReviewHub() {
                 }
             }
         },
-        [tiktokUrl, clearTikTok]
+        [tiktokUrl, clearTikTok],
     );
 
     const handleSearchChange = useCallback(
@@ -623,7 +624,7 @@ export default function ReviewHub() {
                 setTikTokUrl(null);
             }
         },
-        [tiktokUrl]
+        [tiktokUrl],
     );
 
     const handleSearchPaste = useCallback(
@@ -643,7 +644,7 @@ export default function ReviewHub() {
             setQuery(displayText);
             if (found) setTikTokUrl(found);
         },
-        [query, tiktokUrl]
+        [query, tiktokUrl],
     );
 
     const toggleGif = useCallback((id: string, next?: boolean) => {
@@ -994,6 +995,14 @@ export default function ReviewHub() {
                 ) : (
                     <div className={gridClass}>
                         {items.map((item) => {
+                            const pathImg = item.productImage.replace(
+                                "https://media.ikk.ist",
+                                "",
+                            );
+                            const pathGif = item.productGif.replace(
+                                "https://media.ikk.ist",
+                                "",
+                            );
                             const gif = !!gifOn[item._id];
                             const m = merchantInfo(item.affiliateUrl);
                             const d = new Date(item.publishedAt);
@@ -1017,45 +1026,47 @@ export default function ReviewHub() {
                                             <div
                                                 className="relative aspect-[4/5] md:aspect-[1/1] w-full"
                                                 onMouseEnter={() =>
-                                                    item.productGif &&
+                                                    pathGif &&
                                                     canHover &&
                                                     toggleGif(item._id, true)
                                                 }
                                                 onMouseLeave={() =>
-                                                    item.productGif &&
+                                                    pathGif &&
                                                     canHover &&
                                                     toggleGif(item._id, false)
                                                 }
                                                 onClick={() =>
-                                                    item.productGif &&
+                                                    pathGif &&
                                                     toggleGif(item._id)
                                                 }
                                                 role="button"
                                                 aria-label="พรีวิว GIF"
                                             >
-                                                <img
-                                                    src={item.productImage}
+                                                <Image
+                                                    src={pathImg}
                                                     alt={item.title}
-                                                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                                                    fill
+                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
                                                         gif
                                                             ? "opacity-0"
                                                             : "opacity-100"
                                                     }`}
-                                                    loading="lazy"
-                                                    decoding="async"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    priority={false}
                                                 />
                                                 {item.productGif && (
-                                                    <img
-                                                        src={item.productGif}
-                                                        alt={`${item.title} gif`}
-                                                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-                                                            gif
-                                                                ? "opacity-100"
-                                                                : "opacity-0"
-                                                        }`}
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                    />
+                                                <Image
+                                                    src={pathGif}
+                                                    alt={item.title}
+                                                    fill
+                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
+                                                        gif
+                                                            ? "opacity-100"
+                                                            : "opacity-0"
+                                                    }`}
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    priority={false}
+                                                />
                                                 )}
 
                                                 {item.productGif &&
@@ -1066,7 +1077,7 @@ export default function ReviewHub() {
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 toggleGif(
-                                                                    item._id
+                                                                    item._id,
                                                                 );
                                                             }}
                                                             className="absolute top-2 right-2 z-20 md:hidden"
@@ -1085,7 +1096,7 @@ export default function ReviewHub() {
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 toggleGif(
-                                                                    item._id
+                                                                    item._id,
                                                                 );
                                                             }}
                                                             className="absolute top-2 right-2 z-20 rounded-md bg-black/40 px-2 py-[2px] text-[11px] text-white/70 backdrop-blur md:hidden"
@@ -1168,48 +1179,50 @@ export default function ReviewHub() {
                                         <div
                                             className="relative aspect-[4/5] md:aspect-[16/10] w-full"
                                             onMouseEnter={() =>
-                                                item.productGif &&
+                                                pathGif &&
                                                 canHover &&
                                                 toggleGif(item._id, true)
                                             }
                                             onMouseLeave={() =>
-                                                item.productGif &&
+                                                pathGif &&
                                                 canHover &&
                                                 toggleGif(item._id, false)
                                             }
                                             onClick={() =>
-                                                item.productGif &&
+                                                pathGif &&
                                                 toggleGif(item._id)
                                             }
                                             role="button"
                                             aria-label="พรีวิว GIF (เดสก์ท็อป: hover / มือถือ: แตะ)"
                                         >
-                                            <img
-                                                src={item.productImage}
-                                                alt={item.title}
-                                                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-                                                    gif
-                                                        ? "opacity-0"
-                                                        : "opacity-100"
-                                                }`}
-                                                loading="lazy"
-                                                decoding="async"
-                                            />
-                                            {item.productGif && (
-                                                <img
-                                                    src={item.productGif}
-                                                    alt={`${item.title} gif`}
-                                                    className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+                                                <Image
+                                                    src={pathImg}
+                                                    alt={item.title}
+                                                    fill
+                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
+                                                        gif
+                                                            ? "opacity-0"
+                                                            : "opacity-100"
+                                                    }`}
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    priority={false}
+                                                />
+                                            {pathGif && (
+                                                <Image
+                                                    src={pathGif}
+                                                    alt={item.title}
+                                                    fill
+                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
                                                         gif
                                                             ? "opacity-100"
                                                             : "opacity-0"
                                                     }`}
-                                                    loading="lazy"
-                                                    decoding="async"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    priority={false}
                                                 />
                                             )}
 
-                                            {item.productGif && !canHover && (
+                                            {pathGif && !canHover && (
                                                 <MobileGifHint
                                                     playing={gif}
                                                     onToggle={() =>
