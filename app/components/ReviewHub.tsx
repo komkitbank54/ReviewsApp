@@ -24,7 +24,7 @@ import {
     LayoutGrid,
     Rows,
 } from "lucide-react";
-import Image from 'next/image'
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 
@@ -995,14 +995,19 @@ export default function ReviewHub() {
                 ) : (
                     <div className={gridClass}>
                         {items.map((item) => {
-                            const pathImg = item.productImage.replace(
-                                "https://media.ikk.ist",
-                                "",
-                            );
-                            const pathGif = item.productGif.replace(
-                                "https://media.ikk.ist",
-                                "",
-                            );
+                            const pathImg = item.productImage
+                                ? item.productImage.replace(
+                                      "https://media.ikk.ist",
+                                      "",
+                                  )
+                                : "";
+
+                            const pathGif = item.productGif
+                                ? item.productGif.replace(
+                                      "https://media.ikk.ist",
+                                      "",
+                                  )
+                                : "";
                             const gif = !!gifOn[item._id];
                             const m = merchantInfo(item.affiliateUrl);
                             const d = new Date(item.publishedAt);
@@ -1055,18 +1060,18 @@ export default function ReviewHub() {
                                                     priority={false}
                                                 />
                                                 {item.productGif && (
-                                                <Image
-                                                    src={pathGif}
-                                                    alt={item.title}
-                                                    fill
-                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
-                                                        gif
-                                                            ? "opacity-100"
-                                                            : "opacity-0"
-                                                    }`}
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                    priority={false}
-                                                />
+                                                    <Image
+                                                        src={pathGif}
+                                                        alt={item.title}
+                                                        fill
+                                                        className={`absolute inset-0 object-cover transition-opacity duration-300 ${
+                                                            gif
+                                                                ? "opacity-100"
+                                                                : "opacity-0"
+                                                        }`}
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                        priority={false}
+                                                    />
                                                 )}
 
                                                 {item.productGif &&
@@ -1189,24 +1194,23 @@ export default function ReviewHub() {
                                                 toggleGif(item._id, false)
                                             }
                                             onClick={() =>
-                                                pathGif &&
-                                                toggleGif(item._id)
+                                                pathGif && toggleGif(item._id)
                                             }
                                             role="button"
                                             aria-label="พรีวิว GIF (เดสก์ท็อป: hover / มือถือ: แตะ)"
                                         >
-                                                <Image
-                                                    src={pathImg}
-                                                    alt={item.title}
-                                                    fill
-                                                    className={`absolute inset-0 object-cover transition-opacity duration-300 ${
-                                                        gif
-                                                            ? "opacity-0"
-                                                            : "opacity-100"
-                                                    }`}
-                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                    priority={false}
-                                                />
+                                            <Image
+                                                src={pathImg}
+                                                alt={item.title}
+                                                fill
+                                                className={`absolute inset-0 object-cover transition-opacity duration-300 ${
+                                                    gif
+                                                        ? "opacity-0"
+                                                        : "opacity-100"
+                                                }`}
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                priority={false}
+                                            />
                                             {pathGif && (
                                                 <Image
                                                     src={pathGif}
